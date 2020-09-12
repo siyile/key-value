@@ -16,6 +16,8 @@
 
 	<properties>
 		<java.version>11</java.version>
+		<!--suppress UnresolvedMavenProperty -->
+		<mongo.uri>${env.MONGO_URI}</mongo.uri>
 	</properties>
 
 	<dependencies>
@@ -77,6 +79,12 @@
 				<artifactId>spring-boot-maven-plugin</artifactId>
 			</plugin>
 		</plugins>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
 	</build>
 
 </project>

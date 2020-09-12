@@ -1,0 +1,14 @@
+version: 0.0
+os: linux
+files:
+  - source: /
+    destination: /tmp/kv
+hooks:
+  BeforeInstall:
+    - location: ./clean.sh
+  ApplicationStart:
+    - location: ./start.sh
+  ApplicationStop:
+    - location: ./stop.sh
+  ValidateService:
+    - location: ./validate.sh
