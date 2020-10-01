@@ -2,3 +2,5 @@ spring:
   data:
     mongodb:
       uri: @mongo.uri@
+  redis:
+    url: @redis.url@

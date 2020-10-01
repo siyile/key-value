@@ -18,6 +18,8 @@
 		<java.version>11</java.version>
 		<!--suppress UnresolvedMavenProperty -->
 		<mongo.uri>${env.MONGO_URI}</mongo.uri>
+		<!--suppress UnresolvedMavenProperty -->
+		<redis.url>${env.REDIS_URL}</redis.url>
 	</properties>
 
 	<dependencies>
