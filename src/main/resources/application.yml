@@ -1,6 +1,6 @@
 spring:
   data:
     mongodb:
-      uri: @mongo.uri@
+      uri: ${MONGO_URI}
   redis:
-    url: @redis.url@
+    url: ${REDIS_URL}
