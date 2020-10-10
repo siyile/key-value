@@ -1,9 +1,17 @@
 pipeline {
-    agent any
+    agent {
+        docker {
+            image 'gradle:jdk11'
+            args '-v "$PWD":/home/gradle/project -w /home/gradle/project'
+        }
+    }
     stages {
         stage('Build') {
             steps {
-                echo 'This is a minimal pipeline'
+                echo 'Start building'
+                sh 'chmod 777 ./gradlew'
+                sh './gradlew clean'
+                sh './gradlew --scan build'
             }
         }
     }
