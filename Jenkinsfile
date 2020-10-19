@@ -8,12 +8,10 @@ pipeline {
     stages {
         stage('Build') {
             steps {
-                sh './gradlew assemble'
-            }
-        }
-        stage('Test') {
-            steps {
-                echo 'test'
+                echo 'Start building'
+                sh 'chmod 777 ./gradlew'
+                sh './gradlew clean'
+                sh './gradlew --scan build'
             }
         }
     }
