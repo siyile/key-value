@@ -1,13 +1,11 @@
 plugins {
+	id 'java'
 	id 'org.springframework.boot' version '2.3.4.RELEASE'
 	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
 	id 'pl.allegro.tech.build.axion-release' version '1.12.0'
-	id 'java'
+	id 'com.palantir.docker' version '0.25.0'
+	id 'com.palantir.docker-run' version '0.25.0'
 }
-
-group = 'top.siyile'
-version = '0.0.1-SNAPSHOT'
-sourceCompatibility = '11'
 
 configurations {
 	compileOnly {
@@ -17,6 +15,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -35,6 +34,14 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 }
 
+String imageName = "siyile/key-value"
+
+docker {
+	name imageName
+	files "build/libs/${bootJar.archiveFileName.get()}"
+	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+}
+
 test {
 	useJUnitPlatform()
 }
@@ -42,3 +49,6 @@ test {
 processResources {
 	expand(MONGO_URI: System.getenv("MONGO_URI"), REDIS_URL: System.getenv("REDIS_URL"), project: project)
 }
+
+project.version = scmVersion.version
+sourceCompatibility = '11'
