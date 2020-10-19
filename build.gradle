@@ -7,6 +7,10 @@ plugins {
 	id 'com.palantir.docker-run' version '0.25.0'
 }
 
+project.version = scmVersion.version
+group = 'top.siyile'
+sourceCompatibility = '11'
+
 configurations {
 	compileOnly {
 		extendsFrom annotationProcessor
@@ -34,12 +38,19 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 }
 
-String imageName = "siyile/key-value"
+String imageName = "siyile/key-value:$version"
 
 docker {
 	name imageName
 	files "build/libs/${bootJar.archiveFileName.get()}"
 	buildArgs([JAR_FILE: bootJar.archiveFileName.get()])
+}
+
+dockerRun {
+	name project.name
+	image imageName
+	ports '8090:8080'
+	clean true
 }
 
 test {
@@ -49,6 +60,3 @@ test {
 processResources {
 	expand(MONGO_URI: System.getenv("MONGO_URI"), REDIS_URL: System.getenv("REDIS_URL"), project: project)
 }
-
-project.version = scmVersion.version
-sourceCompatibility = '11'
