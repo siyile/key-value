@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            image 'gradle:jdk11'
-            args '-v "$PWD":/home/gradle/project -w /home/gradle/project'
-        }
-    }
+    agent any
     stages {
         stage('Build') {
             steps {
