@@ -39,6 +39,7 @@ dependencies {
 	testCompileOnly 'org.projectlombok:lombok'
 
 	compile group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.3'
+	testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
 }
 
 String imageName = "siyile/key-value:$version"

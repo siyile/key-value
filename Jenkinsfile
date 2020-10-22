@@ -10,7 +10,7 @@ pipeline {
             steps {
                 echo 'Start building'
                 sh 'chmod 777 ./gradlew'
-                sh './gradlew build'
+                sh './gradlew assemble'
             }
         }
         stage('Test') {

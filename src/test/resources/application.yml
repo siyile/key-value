@@ -1,9 +1,4 @@
 spring:
   redis:
-    url: ENC(TYRkad/6948QKn/TS6+vKlC713EN/ZLp1YUZ6jVM3smyMBx0vfbLbXJt+S4iIKCn)
-
-jasypt:
-  encryptor:
-    password: ${JASYPT_ENCRYPTOR_PASSWORD}
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    host: localhost
+    port: 6379
