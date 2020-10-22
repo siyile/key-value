@@ -1,33 +1,34 @@
 pipeline {
-    agent {
-        docker {
-            image 'gradle:jdk11'
-            args '-v "$PWD":/home/gradle/project -w /home/gradle/project'
-        }
-    }
+    agent none
     stages {
         stage('Build') {
+            agent {
+                docker {
+                    image 'gradle:jdk11'
+                    args '-v "$PWD":/home/gradle/project -w /home/gradle/project'
+                }
+            }
             steps {
                 echo 'Start building'
                 sh 'chmod 777 ./gradlew'
                 sh './gradlew assemble'
-            }
-        }
-        stage('Test') {
-            steps {
                 sh './gradlew test'
             }
         }
         stage('Build Docker image') {
+            agent any
             steps {
+                sh 'chmod 777 ./gradlew'
                 sh './gradlew docker'
             }
         }
         stage('Push Docker image') {
+            agent any
             environment {
                 DOCKER_HUB_LOGIN = credentials('docker-hub')
             }
             steps {
+            sh 'chmod 777 ./gradlew'
                 sh 'docker login --username=$DOCKER_HUB_LOGIN_USR --password=$DOCKER_HUB_LOGIN_PSW'
                 sh './gradlew dockerPush'
             }
