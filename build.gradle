@@ -34,8 +34,11 @@ dependencies {
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
 	}
+	testImplementation 'de.flapdoodle.embed:de.flapdoodle.embed.mongo'
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
+
+	compile group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.3'
 }
 
 String imageName = "siyile/key-value:$version"
@@ -55,8 +58,4 @@ dockerRun {
 
 test {
 	useJUnitPlatform()
-}
-
-processResources {
-	expand(MONGO_URI: System.getenv("MONGO_URI"), REDIS_URL: System.getenv("REDIS_URL"), project: project)
 }
