@@ -5,6 +5,7 @@ plugins {
 	id 'pl.allegro.tech.build.axion-release' version '1.12.0'
 	id 'com.palantir.docker' version '0.25.0'
 	id 'com.palantir.docker-run' version '0.25.0'
+	id 'jp.classmethod.aws.cloudformation' version '0.41'
 }
 
 project.version = scmVersion.version
@@ -42,7 +43,8 @@ dependencies {
 	testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
 }
 
-String imageName = "siyile/key-value:$version"
+String dockerHubUsernameProperty = findProperty('dockerHubUsername') ?: 'siyile'
+String imageName = "${dockerHubUsernameProperty}/key-value:$version"
 
 docker {
 	name imageName
@@ -59,4 +61,19 @@ dockerRun {
 
 test {
 	useJUnitPlatform()
+}
+
+cloudFormation {
+	stackName "$project.name-stack"
+	stackParams([
+			SubnetID: findProperty('subnetId') ?: '',
+			ServiceName: project.name,
+			ServiceVersion: project.version,
+			DockerHubUsername: dockerHubUsernameProperty
+	])
+	templateFile project.file("ecs.yml")
+}
+
+aws {
+	region = findProperty('region') ?: 'us-east-1'
 }
