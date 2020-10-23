@@ -20,8 +20,8 @@ Resources:
       GroupDescription: Security group for service
       SecurityGroupIngress:
         - IpProtocol: tcp
-          FromPort: 8090
-          ToPort: 8090
+          FromPort: 8080
+          ToPort: 8080
           CidrIp: 0.0.0.0/0
   TaskDefinition:
     Type: AWS::ECS::TaskDefinition
@@ -34,7 +34,7 @@ Resources:
         - Name: !Sub ${ServiceName}-container
           Image: !Sub ${DockerHubUsername}/${ServiceName}:${ServiceVersion}
           PortMappings:
-            - ContainerPort: 8090
+            - ContainerPort: 8080
       RequiresCompatibilities:
         - EC2
         - FARGATE

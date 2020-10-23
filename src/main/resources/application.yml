@@ -1,12 +1,6 @@
 spring:
   data:
     mongodb:
-      uri: ENC(RfLBEMaj2TTsw/ovYa4RiBphV/2G/HDy7N5HbwZAhj3/tr4c+NzqmHSP1YCbgvIhGmkl6TJuRDvCqz4KUiL3436V51C8akk9wws1JnuHiCs=)
+      uri: ${MONGO_URI}
   redis:
-    url: ENC(CjAVWMqIx1NRmh9/sa5/g5OawdZFn6JD++NYDK4eiuuYZ+Xn+vqH34RsdB48vWNX)
-
-jasypt:
-  encryptor:
-    password: ${JASYPT_ENCRYPTOR_PASSWORD}
-    algorithm: PBEWithMD5AndDES
-    iv-generator-classname: org.jasypt.iv.NoIvGenerator
+    url: ${REDIS_URL}

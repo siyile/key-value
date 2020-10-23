@@ -33,7 +33,5 @@ pipeline {
                 sh './gradlew dockerPush'
             }
         }
-
-
     }
 }

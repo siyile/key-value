@@ -39,8 +39,15 @@ dependencies {
 	testAnnotationProcessor 'org.projectlombok:lombok'
 	testCompileOnly 'org.projectlombok:lombok'
 
-	compile group: 'com.github.ulisesbocchio', name: 'jasypt-spring-boot-starter', version: '3.0.3'
 	testCompile group: 'com.github.kstyrc', name: 'embedded-redis', version: '0.6'
+}
+
+processResources {
+	expand(MONGO_URI: System.getenv("MONGO_URI"), REDIS_URL: System.getenv("REDIS_URL"), project: project)
+}
+
+test {
+	useJUnitPlatform()
 }
 
 String dockerHubUsernameProperty = findProperty('dockerHubUsername') ?: 'siyile'
@@ -57,10 +64,6 @@ dockerRun {
 	image imageName
 	ports '8090:8080'
 	clean true
-}
-
-test {
-	useJUnitPlatform()
 }
 
 cloudFormation {
