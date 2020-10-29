@@ -3,6 +3,7 @@ package top.siyile.keyvalue;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -14,12 +15,14 @@ import java.util.concurrent.TimeUnit;
 public class EntryController {
     private final EntryRepository repository;
     private final StringRedisTemplate stringRedisTemplate;
+    private final EntryClient entryClient;
     private static final String CONTENT_KEY = "CONTENT_KEY";
     public static final String CONTENT_SIZE_KEY = "CONTENT_SIZE_KEY";
     @Autowired
-    public EntryController(EntryRepository repository, StringRedisTemplate template) {
+    public EntryController(EntryRepository repository, StringRedisTemplate template, EntryClient entryClient) {
         this.repository = repository;
         this.stringRedisTemplate = template;
+        this.entryClient = entryClient;
     }
 
     private String content(Map<String, Integer> map) {
@@ -55,5 +58,10 @@ public class EntryController {
         stringRedisTemplate.expire(CONTENT_SIZE_KEY, 10, TimeUnit.SECONDS);
         System.out.println("SET CONTENT CACHE");
         return new CounterResponse(map.size(), content(map));
+    }
+
+    @GetMapping("/get-counter")
+    public CounterResponse getCounter() {
+        return entryClient.counter();
     }
 }
