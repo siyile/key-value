@@ -4,3 +4,13 @@ spring:
       uri: ${MONGO_URI}
   redis:
     url: ${REDIS_URL}
+server:
+  port: 8081
+resilience4j:
+  circuitbreaker:
+    instances:
+      counter:
+        slidingWindowSize: 10
+        minimumNumberOfCalls: 10
+        permittedNumberOfCallsInHalfOpenState: 1
+        waitDurationInOpenState: 1000

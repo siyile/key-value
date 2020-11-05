@@ -1,28 +1,27 @@
 package top.siyile.keyvalue;
 
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.concurrent.TimeUnit;
 
 @RestController
 public class EntryController {
     private final EntryRepository repository;
     private final StringRedisTemplate stringRedisTemplate;
-    private final EntryClient entryClient;
     private static final String CONTENT_KEY = "CONTENT_KEY";
     public static final String CONTENT_SIZE_KEY = "CONTENT_SIZE_KEY";
     @Autowired
-    public EntryController(EntryRepository repository, StringRedisTemplate template, EntryClient entryClient) {
+    public EntryController(EntryRepository repository, StringRedisTemplate template) {
         this.repository = repository;
         this.stringRedisTemplate = template;
-        this.entryClient = entryClient;
     }
 
     private String content(Map<String, Integer> map) {
@@ -60,8 +59,17 @@ public class EntryController {
         return new CounterResponse(map.size(), content(map));
     }
 
-    @GetMapping("/get-counter")
-    public CounterResponse getCounter() {
-        return entryClient.counter();
+    @CircuitBreaker(name = "counter", fallbackMethod = "fallback")
+    @GetMapping("/counter-random")
+    public String counterRandom() throws RuntimeException {
+        Random rand = new Random();
+        if (rand.nextInt(10) < 7) {
+            throw new RuntimeException("random error");
+        }
+        return "Success!";
+    }
+
+    private String fallback(RuntimeException e) {
+        return "Fallback method called";
     }
 }
